@@ -35,3 +35,25 @@ model Role {
   
   @@map("roles")
 }
+
+
+model Movie {
+  id            Int      @id @default(autoincrement())
+  title         String
+  episodeId     Int
+  openingCrawl  String
+  director      String
+  producer      String
+  releaseDate   String
+  species       String[]
+  starships     String[]
+  vehicles      String[]
+  characters    String[]
+  planets       String[]
+  url           String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+
+  @@index([title])
+  @@map("movies")
+}

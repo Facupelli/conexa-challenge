@@ -9,6 +9,7 @@ import config from './config/configuration';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { JwtStrategy } from './modules/auth/strategies/jwt.strategy';
+import { MoviesModule } from './modules/movies/movies.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { JwtStrategy } from './modules/auth/strategies/jwt.strategy';
     PrismaModule,
     AuthModule,
     UsersModule,
+    MoviesModule,
   ],
   controllers: [AppController],
   providers: [

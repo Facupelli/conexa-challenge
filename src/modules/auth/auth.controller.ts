@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -32,11 +25,5 @@ export class AuthController {
   @Post('logout')
   async logout(@Request() req) {
     return req.logout();
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('protected')
-  async getHello(@Request() req) {
-    return req.user;
   }
 }
