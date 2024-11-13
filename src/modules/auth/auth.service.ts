@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from '@prisma/client';
+import { UserWithRoles } from '../users/users.repository';
 
 @Injectable()
 export class AuthService {
@@ -12,8 +12,9 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<User> {
-    const user: User | null = await this.usersService.findByEmail(email);
+  async validateUser(email: string, password: string): Promise<UserWithRoles> {
+    const user: UserWithRoles | null =
+      await this.usersService.findByEmail(email);
 
     if (!user) {
       throw new BadRequestException('User not found');
