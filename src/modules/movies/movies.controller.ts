@@ -17,14 +17,14 @@ import { UpdateMovieDto } from './dto/update-movie.dto';
 import { Movie } from '@prisma/client';
 import {
   ApiBearerAuth,
-  ApiCreatedResponse,
-  ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 import { SyncMoviesResponseDto } from './dto/sync-movies-response.dto';
 import { Public } from 'src/common/decorators/is-public.decorator';
+import { ApiOkCustomResponse } from 'src/common/decorators/api-ok-custom-response.decorator';
+import { ApiCreatedCustomResponse } from 'src/common/decorators/api-created-custom-response.decorator';
 
 @ApiTags('Movies')
 @Controller({ version: '1', path: 'movies' })
@@ -33,7 +33,7 @@ export class MoviesController {
 
   @Public()
   @ApiOperation({ summary: 'Retrieve a list of all movies' })
-  @ApiOkResponse({ type: CreateMovieDto, isArray: true })
+  @ApiOkCustomResponse({ type: CreateMovieDto, isArray: true })
   @Get()
   async getAllMovie(): Promise<Movie[]> {
     return await this.moviesService.getAllMovies();
@@ -42,7 +42,7 @@ export class MoviesController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Retrieve details of a specific movie by ID' })
   @ApiParam({ name: 'id', type: Number })
-  @ApiOkResponse({ type: CreateMovieDto })
+  @ApiOkCustomResponse({ type: CreateMovieDto })
   @Roles(Role.USER)
   @UseGuards(RolesGuard)
   @Get(':id')
@@ -52,7 +52,7 @@ export class MoviesController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create a new movie' })
-  @ApiCreatedResponse({ type: CreateMovieDto })
+  @ApiCreatedCustomResponse({ type: CreateMovieDto })
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   @Post()
@@ -63,7 +63,7 @@ export class MoviesController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update an existing movie' })
   @ApiParam({ name: 'id', type: Number })
-  @ApiCreatedResponse({ type: CreateMovieDto })
+  @ApiCreatedCustomResponse({ type: CreateMovieDto })
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   @Put(':id')
@@ -77,7 +77,7 @@ export class MoviesController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete a movie' })
   @ApiParam({ name: 'id', type: Number })
-  @ApiOkResponse({ type: CreateMovieDto })
+  @ApiOkCustomResponse({ type: CreateMovieDto })
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   @Delete(':id')
@@ -90,7 +90,7 @@ export class MoviesController {
     summary:
       'Fetch and synchronize movies from Star Wars API into local database',
   })
-  @ApiOkResponse({ type: SyncMoviesResponseDto })
+  @ApiOkCustomResponse({ type: SyncMoviesResponseDto })
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   @Post('sync')
