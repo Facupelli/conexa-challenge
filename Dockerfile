@@ -24,4 +24,4 @@ RUN npm run build
 RUN npm ci --only=production
 
 EXPOSE 3000
-CMD ["sh", "-c", "npx prisma db push && npm run start:prod"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npm run start:prod"]
