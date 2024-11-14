@@ -16,23 +16,40 @@ export class MoviesService {
   ) {}
 
   async getAllMovies(): Promise<Movie[]> {
-    return await this.moviesRepository.getAllMovies();
+    return await this.moviesRepository.getAllMovies({
+      where: {
+        deletedAt: null,
+      },
+    });
   }
 
   async getMovie(id: number): Promise<Movie> {
-    return await this.moviesRepository.getMovie(id);
+    return await this.moviesRepository.getMovie({
+      where: {
+        id,
+      },
+    });
   }
 
   async createMovie(movie: CreateMovieDto): Promise<Movie> {
-    return await this.moviesRepository.createMovie(movie);
+    return await this.moviesRepository.createMovie({ data: movie });
   }
 
   async updateMovie(id: number, movie: UpdateMovieDto): Promise<Movie> {
-    return await this.moviesRepository.updateMovie(id, movie);
+    return await this.moviesRepository.updateMovie({
+      where: {
+        id,
+      },
+      data: movie,
+    });
   }
 
   async deleteMovie(id: number): Promise<Movie> {
-    return await this.moviesRepository.deleteMovie(id);
+    return await this.moviesRepository.deleteMovie({
+      where: {
+        id,
+      },
+    });
   }
 
   async syncMoviesWithStarWarsApi(): Promise<{
@@ -44,7 +61,7 @@ export class MoviesService {
 
     const starWarsApiMovies: { results: StarWarsApiMovie[] } =
       await this.starWarsApiRepository.getAllMovies();
-    const localMovies: Movie[] = await this.moviesRepository.getAllMovies();
+    const localMovies: Movie[] = await this.moviesRepository.getAllMovies({});
 
     for (const swMovie of starWarsApiMovies.results) {
       const externalId = parseInt(swMovie.url.split('/').filter(Boolean).pop());
@@ -55,11 +72,16 @@ export class MoviesService {
       const mappedMovie = this.mapStarWarsMovie(swMovie, externalId);
 
       if (existingMovie) {
-        await this.moviesRepository.updateMovie(existingMovie.id, mappedMovie);
+        await this.moviesRepository.updateMovie({
+          where: {
+            id: existingMovie.id,
+          },
+          data: mappedMovie,
+        });
         stats.updated++;
         this.logger.debug(`Updated movie: ${mappedMovie.title}`);
       } else {
-        await this.moviesRepository.createMovie(mappedMovie);
+        await this.moviesRepository.createMovie({ data: mappedMovie });
         stats.added++;
         this.logger.debug(`Added new movie: ${mappedMovie.title}`);
       }

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, User } from '@prisma/client';
-import { CreateUserDto } from '../auth/dto/create-user.dto';
 
 export type UserWithRoles = Prisma.UserGetPayload<{
   select: {
@@ -20,11 +19,12 @@ export type UserWithRoles = Prisma.UserGetPayload<{
 export class UsersRepository {
   constructor(private prisma: PrismaService) {}
 
-  async findByEmail(email: string): Promise<UserWithRoles | null> {
+  async findUnique(params: {
+    where: Prisma.UserWhereUniqueInput;
+  }): Promise<UserWithRoles | null> {
+    const { where } = params;
     return this.prisma.user.findUnique({
-      where: {
-        email,
-      },
+      where,
       select: {
         email: true,
         id: true,
@@ -38,9 +38,10 @@ export class UsersRepository {
     });
   }
 
-  async createUser(user: CreateUserDto): Promise<User> {
+  async createUser(params: { data: Prisma.UserCreateInput }): Promise<User> {
+    const { data } = params;
     return this.prisma.user.create({
-      data: user,
+      data,
     });
   }
 }

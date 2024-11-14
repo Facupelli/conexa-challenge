@@ -8,10 +8,10 @@ export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async findByEmail(email: string): Promise<UserWithRoles | null> {
-    return this.usersRepository.findByEmail(email);
+    return this.usersRepository.findUnique({ where: { email } });
   }
 
-  async createUser(user: CreateUserDto): Promise<User> {
-    return this.usersRepository.createUser(user);
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
+    return this.usersRepository.createUser({ data: createUserDto });
   }
 }

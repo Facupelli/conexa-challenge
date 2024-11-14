@@ -1,54 +1,56 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
-import { CreateMovieDto } from '../dto/create-movie.dto';
-import { UpdateMovieDto } from '../dto/update-movie.dto';
-import { Movie } from '@prisma/client';
+import { Movie, Prisma } from '@prisma/client';
 
 @Injectable()
 export class MoviesRepository {
   constructor(private prisma: PrismaService) {}
 
-  async getAllMovies(): Promise<Movie[]> {
+  async getAllMovies(params: {
+    where?: Prisma.MovieWhereInput;
+  }): Promise<Movie[]> {
+    const { where } = params;
     return await this.prisma.movie.findMany({
-      where: {
-        deletedAt: null,
-      },
+      where,
     });
   }
 
-  async getMovie(id: number): Promise<Movie | null> {
+  async getMovie(params: {
+    where: Prisma.MovieWhereUniqueInput;
+  }): Promise<Movie | null> {
+    const { where } = params;
     return await this.prisma.movie.findUnique({
-      where: {
-        id: id,
-      },
+      where,
     });
   }
 
-  async createMovie(
-    movie: CreateMovieDto & { externalId?: number },
-  ): Promise<Movie> {
+  async createMovie(params: { data: Prisma.MovieCreateInput }): Promise<Movie> {
+    const { data } = params;
     return await this.prisma.movie.create({
-      data: movie,
+      data,
     });
   }
 
-  async updateMovie(id: number, movie: UpdateMovieDto): Promise<Movie> {
+  async updateMovie(params: {
+    where: Prisma.MovieWhereUniqueInput;
+    data: Prisma.MovieUpdateInput;
+  }): Promise<Movie> {
+    const { where, data } = params;
     return await this.prisma.movie.update({
-      where: {
-        id,
-      },
+      where,
       data: {
-        ...movie,
+        ...data,
         updatedAt: new Date(),
       },
     });
   }
 
-  async deleteMovie(id: number): Promise<Movie> {
+  async deleteMovie(params: {
+    where: Prisma.MovieWhereUniqueInput;
+  }): Promise<Movie> {
+    const { where } = params;
     return await this.prisma.movie.update({
-      where: {
-        id: id,
-      },
+      where,
       data: {
         deletedAt: new Date(),
       },
