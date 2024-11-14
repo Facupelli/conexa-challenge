@@ -16,19 +16,19 @@ export class AuthService {
     const user: UserWithRoles | null =
       await this.usersService.findByEmail(email);
 
-    if (!user) {
+    if (user === null) {
       throw new BadRequestException('User not found');
     }
 
     const isMatch: boolean = bcrypt.compareSync(password, user.password);
     if (!isMatch) {
-      throw new BadRequestException('Password does not match');
+      throw new BadRequestException('Email or password are invalid');
     }
 
     return user;
   }
 
-  async login(user: any): Promise<any> {
+  async login(user: any): Promise<{ access_token: string }> {
     const payload = { email: user.email, sub: user.id };
 
     return {

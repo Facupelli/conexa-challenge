@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { StarWarsApiRepository } from './repositories/star-wars-api.repository';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { MoviesRepository } from './repositories/movies.repository';
@@ -24,11 +24,17 @@ export class MoviesService {
   }
 
   async getMovie(id: number): Promise<Movie> {
-    return await this.moviesRepository.getMovie({
+    const movie: Movie | null = await this.moviesRepository.getMovie({
       where: {
         id,
       },
     });
+
+    if (movie === null) {
+      throw new NotFoundException(`Movie with id ${id} not found`);
+    }
+
+    return movie;
   }
 
   async createMovie(movie: CreateMovieDto): Promise<Movie> {
@@ -61,6 +67,8 @@ export class MoviesService {
 
     const starWarsApiMovies: { results: StarWarsApiMovie[] } =
       await this.starWarsApiRepository.getAllMovies();
+
+    this.logger.log(starWarsApiMovies.results);
     const localMovies: Movie[] = await this.moviesRepository.getAllMovies({});
 
     for (const swMovie of starWarsApiMovies.results) {

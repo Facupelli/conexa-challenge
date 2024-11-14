@@ -23,7 +23,7 @@ export class UsersRepository {
     where: Prisma.UserWhereUniqueInput;
   }): Promise<UserWithRoles | null> {
     const { where } = params;
-    return this.prisma.user.findUnique({
+    return await this.prisma.user.findUnique({
       where,
       select: {
         email: true,
@@ -40,7 +40,7 @@ export class UsersRepository {
 
   async createUser(params: { data: Prisma.UserCreateInput }): Promise<User> {
     const { data } = params;
-    return this.prisma.user.create({
+    return await this.prisma.user.create({
       data,
     });
   }
