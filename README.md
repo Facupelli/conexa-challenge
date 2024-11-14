@@ -1,4 +1,4 @@
-# Gestión de películas y series API
+# API de gestión de películas y series
 
 Backend realizado con NestJS, que gestiona información de películas y series utilizando la API de Star Wars (SWAPI) como fuente de datos. Este proyecto implementa un sistema de autenticación, control de acceso basado en roles y gestión de películas.
 
