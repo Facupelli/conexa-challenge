@@ -65,9 +65,11 @@ export class MoviesService {
 
     const starWarsApiMovies: { results: StarWarsApiMovie[] } =
       await this.starWarsApiRepository.getAllMovies();
-
-    this.logger.log(starWarsApiMovies.results);
-    const localMovies: Movie[] = await this.moviesRepository.getAllMovies({});
+    const localMovies: Movie[] = await this.moviesRepository.getAllMovies({
+      where: {
+        deletedAt: null,
+      },
+    });
 
     for (const swMovie of starWarsApiMovies.results) {
       const externalId = parseInt(swMovie.url.split('/').filter(Boolean).pop());
