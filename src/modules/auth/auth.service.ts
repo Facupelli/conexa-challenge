@@ -38,7 +38,7 @@ export class AuthService {
   async register(createUserDto: CreateUserDto): Promise<any> {
     const user = await this.usersService.findByEmail(createUserDto.email);
 
-    if (user) {
+    if (user !== null) {
       throw new BadRequestException('Email already in use');
     }
 
