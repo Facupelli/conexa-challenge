@@ -97,14 +97,14 @@ Se puede acceder a la documentación de la API en: `http://localhost:3000/api/do
 
 ### Endpoints
 
-#### Autenticación
+#### Autenticación (Públicos)
 
 - `POST /auth/register` - Registra un nuevo usuario
 - `POST /auth/login` - Iniciar sesión (obtiene un token JWT)
 
 #### Peliculas
 
-- `GET /movies` - Obtiene todas las películas (Admin & Usuarios Regulares)
+- `GET /movies` - Obtiene todas las películas Público
 - `GET /movies/:id` - Obtiene una película por su ID (Admin & Usuarios Regulares)
 - `POST /movies` - Crea una nueva película (Admin )
 - `PUT /movies/:id` - Actualiza una película (Admin )

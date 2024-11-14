@@ -28,6 +28,7 @@ export class MoviesService {
     const movie: Movie | null = await this.moviesRepository.getMovie({
       where: {
         id,
+        deletedAt: null,
       },
     });
 
