@@ -104,7 +104,12 @@ Se puede acceder a la documentación de la API en: `http://localhost:3000/api/do
 
 #### Peliculas
 
-- `GET /movies` - Obtiene todas las películas Público
+Públicos:
+
+- `GET /movies` - Obtiene todas las películas
+
+Autenticados:
+
 - `GET /movies/:id` - Obtiene una película por su ID (Solo Usuarios Regulares)
 - `POST /movies` - Crea una nueva película (Admin )
 - `PUT /movies/:id` - Actualiza una película (Admin )
