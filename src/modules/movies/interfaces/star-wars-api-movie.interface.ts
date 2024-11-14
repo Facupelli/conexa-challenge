@@ -1,12 +1,4 @@
-import { Role } from 'prisma/role.enum';
-
-export interface ReqUser {
-  id: string;
-  email: string;
-  roles: Role[];
-}
-
-export interface Movie {
+export interface StarWarsApiMovie {
   title: string;
   episode_id: number;
   opening_crawl: string;

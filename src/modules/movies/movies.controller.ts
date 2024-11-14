@@ -8,7 +8,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { Role } from 'prisma/role.enum';
+import { Role } from 'src/modules/users/enums/role.enum';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { RolesGuard } from '../users/guards/roles.guard';
 import { MoviesService } from './movies.service';

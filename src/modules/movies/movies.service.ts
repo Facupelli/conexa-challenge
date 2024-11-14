@@ -1,12 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  StarWarsApiMovie,
-  StarWarsApiRepository,
-} from './repositories/star-wars-api.repository';
+import { StarWarsApiRepository } from './repositories/star-wars-api.repository';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { MoviesRepository } from './repositories/movies.repository';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { Movie } from '@prisma/client';
+import { StarWarsApiMovie } from './interfaces/star-wars-api-movie.interface';
 
 @Injectable()
 export class MoviesService {
@@ -76,7 +74,7 @@ export class MoviesService {
   private mapStarWarsMovie(
     swMovie: StarWarsApiMovie,
     externalId: number,
-  ): Omit<Movie, 'id' | 'createdAt' | 'updatedAt'> {
+  ): Omit<Movie, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> {
     return {
       externalId,
       title: swMovie.title,
