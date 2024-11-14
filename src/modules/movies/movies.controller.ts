@@ -71,4 +71,15 @@ export class MoviesController {
   async deleteMovie(@Param('id') id: number): Promise<Movie> {
     return await this.moviesService.deleteMovie(id);
   }
+
+  @ApiOperation({
+    summary:
+      'Fetch and synchronize movies from Star Wars API into local database',
+  })
+  @Roles(Role.ADMIN)
+  @UseGuards(RolesGuard)
+  @Post('sync')
+  async syncMoviesWithStarWarsApi() {
+    return await this.moviesService.syncMoviesWithStarWarsApi();
+  }
 }

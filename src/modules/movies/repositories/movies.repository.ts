@@ -9,7 +9,11 @@ export class MoviesRepository {
   constructor(private prisma: PrismaService) {}
 
   async getAllMovies(): Promise<Movie[]> {
-    return await this.prisma.movie.findMany();
+    return await this.prisma.movie.findMany({
+      where: {
+        deletedAt: null,
+      },
+    });
   }
 
   async getMovie(id: number): Promise<Movie | null> {
@@ -20,7 +24,9 @@ export class MoviesRepository {
     });
   }
 
-  async createMovie(movie: CreateMovieDto): Promise<Movie> {
+  async createMovie(
+    movie: CreateMovieDto & { externalId?: number },
+  ): Promise<Movie> {
     return await this.prisma.movie.create({
       data: movie,
     });
@@ -39,9 +45,12 @@ export class MoviesRepository {
   }
 
   async deleteMovie(id: number): Promise<Movie> {
-    return await this.prisma.movie.delete({
+    return await this.prisma.movie.update({
       where: {
         id: id,
+      },
+      data: {
+        deletedAt: new Date(),
       },
     });
   }
