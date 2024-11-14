@@ -2,14 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import { User } from '@prisma/client';
 import { CreateUserDto } from '../auth/dto/create-user.dto';
-import { UserWithRoles } from './interfaces/user-with-roles.interface';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  async findByEmail(email: string): Promise<UserWithRoles | null> {
-    const user: UserWithRoles | null = await this.usersRepository.findUnique({
+  async findByEmail(email: string): Promise<User | null> {
+    const user: User | null = await this.usersRepository.findUnique({
       where: { email },
     });
 
@@ -21,6 +20,8 @@ export class UsersService {
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    return await this.usersRepository.createUser({ data: createUserDto });
+    return await this.usersRepository.createUser({
+      data: createUserDto,
+    });
   }
 }

@@ -1,6 +1,5 @@
 import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Public } from 'src/common/decorators/is-public.decorator';
@@ -27,12 +26,5 @@ export class AuthController {
   @Post('login')
   async login(@Request() req) {
     return this.authService.login(req.user);
-  }
-
-  @ApiOperation({ summary: 'Logout' })
-  @UseGuards(JwtAuthGuard)
-  @Post('logout')
-  async logout(@Request() req) {
-    return req.logout();
   }
 }

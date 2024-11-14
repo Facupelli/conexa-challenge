@@ -99,13 +99,12 @@ Se puede acceder a la documentación de la API en: `http://localhost:3000/api/do
 
 #### Autenticación
 
-- `POST /auth/register` - Register un usuario
+- `POST /auth/register` - Registra un nuevo usuario
 - `POST /auth/login` - Iniciar sesión (obtiene un token JWT)
-- `POST /auth/logout` - Cerrar sesión
 
 #### Peliculas
 
-- `GET /movies` - Obtiene todas las películas (Público)
+- `GET /movies` - Obtiene todas las películas (Admin & Usuarios Regulares)
 - `GET /movies/:id` - Obtiene una película por su ID (Admin & Usuarios Regulares)
 - `POST /movies` - Crea una nueva película (Admin )
 - `PUT /movies/:id` - Actualiza una película (Admin )
@@ -124,3 +123,12 @@ Authorization: Bearer your_jwt_token
 
 La api se encuentra deployada en `Render` y se puede acceder a través de la siguiente URL: `https://conexa-challenge-qz0b.onrender.com`.
 Tener en cuenta que es un hosting gratiuito, el servicio entra en modo "sleep" cuando no se utiliza. El primer request luego de inactividad puede dermorar hasta 50 segundos en responder.
+
+La base de datos ya tiene 2 usuarios registrados con los cuales se puede probar la API:
+
+- **Usuario Admin**: Email: `admin@conexa.com`, Contraseña: `12345678`
+- **Usuario Regular**: Email: `regular@coneza.com`, Contraseña: `12345678`
+
+## Faltantes
+
+Agregar unit tests para controladores y restricción de acceso

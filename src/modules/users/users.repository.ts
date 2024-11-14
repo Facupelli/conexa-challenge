@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, User } from '@prisma/client';
-import { UserWithRoles } from './interfaces/user-with-roles.interface';
 
 @Injectable()
 export class UsersRepository {
@@ -9,20 +8,10 @@ export class UsersRepository {
 
   async findUnique(params: {
     where: Prisma.UserWhereUniqueInput;
-  }): Promise<UserWithRoles | null> {
+  }): Promise<User | null> {
     const { where } = params;
     return await this.prisma.user.findUnique({
       where,
-      select: {
-        email: true,
-        id: true,
-        password: true,
-        roles: {
-          select: {
-            name: true,
-          },
-        },
-      },
     });
   }
 

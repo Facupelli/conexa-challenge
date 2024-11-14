@@ -1,10 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from '../users/users.service';
-import {
-  mockCreateUserDto,
-  mockUser,
-  mockUserWithRole,
-} from 'test/mocks/users.mock';
+import { mockCreateUserDto, mockUser } from 'test/mocks/users.mock';
 import { NotFoundException } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 
@@ -32,21 +28,19 @@ describe('AuthService', () => {
 
   describe('find by email', () => {
     it('should return a user if email exists', async () => {
-      jest
-        .spyOn(usersRepository, 'findUnique')
-        .mockResolvedValueOnce(mockUserWithRole);
+      jest.spyOn(usersRepository, 'findUnique').mockResolvedValueOnce(mockUser);
 
-      const result = await usersService.findByEmail(mockUserWithRole.email);
+      const result = await usersService.findByEmail(mockUser.email);
 
-      expect(result).toEqual(mockUserWithRole);
+      expect(result).toEqual(mockUser);
     });
 
     it('should throw NotFound error if email does not exist', async () => {
       jest.spyOn(usersRepository, 'findUnique').mockResolvedValueOnce(null);
 
-      await expect(
-        usersService.findByEmail(mockUserWithRole.email),
-      ).rejects.toThrow(NotFoundException);
+      await expect(usersService.findByEmail(mockUser.email)).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 

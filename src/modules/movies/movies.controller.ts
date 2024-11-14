@@ -43,7 +43,7 @@ export class MoviesController {
   @ApiOperation({ summary: 'Retrieve details of a specific movie by ID' })
   @ApiParam({ name: 'id', type: Number })
   @ApiOkResponse({ type: CreateMovieDto })
-  @Roles(Role.USER)
+  @Roles(Role.USER, Role.ADMIN)
   @UseGuards(RolesGuard)
   @Get(':id')
   async getMovie(@Param('id') id: number): Promise<Movie> {

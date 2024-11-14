@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
-import { mockCreateUserDto, mockUserWithRole } from 'test/mocks/users.mock';
+import { mockCreateUserDto, mockUser } from 'test/mocks/users.mock';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { BadRequestException } from '@nestjs/common';
@@ -38,41 +38,31 @@ describe('AuthService', () => {
 
   describe('validate user', () => {
     it('should return true for valid user', async () => {
-      jest
-        .spyOn(usersService, 'findByEmail')
-        .mockResolvedValueOnce(mockUserWithRole);
+      jest.spyOn(usersService, 'findByEmail').mockResolvedValueOnce(mockUser);
       jest.spyOn(bcrypt, 'compareSync').mockReturnValue(true);
 
       const result = await authService.validateUser(
-        mockUserWithRole.email,
-        mockUserWithRole.password,
+        mockUser.email,
+        mockUser.password,
       );
 
-      expect(result).toEqual(mockUserWithRole);
+      expect(result).toEqual(mockUser);
     });
 
     it('should return Bad Request error if user not found', async () => {
       jest.spyOn(usersService, 'findByEmail').mockResolvedValueOnce(null);
 
       await expect(
-        authService.validateUser(
-          mockUserWithRole.email,
-          mockUserWithRole.password,
-        ),
+        authService.validateUser(mockUser.email, mockUser.password),
       ).rejects.toThrow(BadRequestException);
     });
 
     it('should return Bad Request error if passwords do not match', async () => {
-      jest
-        .spyOn(usersService, 'findByEmail')
-        .mockResolvedValueOnce(mockUserWithRole);
+      jest.spyOn(usersService, 'findByEmail').mockResolvedValueOnce(mockUser);
       jest.spyOn(bcrypt, 'compareSync').mockReturnValue(false);
 
       await expect(
-        authService.validateUser(
-          mockUserWithRole.email,
-          mockUserWithRole.password,
-        ),
+        authService.validateUser(mockUser.email, mockUser.password),
       ).rejects.toThrow(BadRequestException);
     });
   });
@@ -82,7 +72,7 @@ describe('AuthService', () => {
       const accessToken = 'access-token';
       jest.spyOn(jwtService, 'sign').mockReturnValue(accessToken);
 
-      const result = await authService.login(mockUserWithRole);
+      const result = await authService.login(mockUser);
       expect(result.access_token).toEqual(accessToken);
     });
   });
@@ -97,7 +87,7 @@ describe('AuthService', () => {
         .mockResolvedValue({ access_token: 'mockAccessToken' });
       jest.spyOn(usersService, 'findByEmail').mockResolvedValueOnce(null);
       jest.spyOn(usersService, 'createUser').mockResolvedValueOnce({
-        ...mockUserWithRole,
+        ...mockUser,
         createdAt: new Date(),
         updatedAt: new Date(),
       });
@@ -117,15 +107,10 @@ describe('AuthService', () => {
     });
 
     it('should return Bad Request error if user already exists', async () => {
-      jest
-        .spyOn(usersService, 'findByEmail')
-        .mockResolvedValueOnce(mockUserWithRole);
+      jest.spyOn(usersService, 'findByEmail').mockResolvedValueOnce(mockUser);
 
       await expect(
-        authService.validateUser(
-          mockUserWithRole.email,
-          mockUserWithRole.password,
-        ),
+        authService.validateUser(mockUser.email, mockUser.password),
       ).rejects.toThrow(BadRequestException);
     });
   });
