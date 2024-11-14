@@ -17,10 +17,13 @@ import { UpdateMovieDto } from './dto/update-movie.dto';
 import { Movie } from '@prisma/client';
 import {
   ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
+import { SyncMoviesResponseDto } from './dto/sync-movies-response.dto';
 
 @ApiTags('Movies')
 @ApiBearerAuth()
@@ -29,6 +32,7 @@ export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   @ApiOperation({ summary: 'Retrieve a list of all movies' })
+  @ApiOkResponse({ type: CreateMovieDto, isArray: true })
   @Get()
   async getAllMovie(): Promise<Movie[]> {
     return await this.moviesService.getAllMovies();
@@ -36,6 +40,7 @@ export class MoviesController {
 
   @ApiOperation({ summary: 'Retrieve details of a specific movie by ID' })
   @ApiParam({ name: 'id', type: Number })
+  @ApiOkResponse({ type: CreateMovieDto })
   @Roles(Role.USER)
   @UseGuards(RolesGuard)
   @Get(':id')
@@ -44,6 +49,7 @@ export class MoviesController {
   }
 
   @ApiOperation({ summary: 'Create a new movie' })
+  @ApiCreatedResponse({ type: CreateMovieDto })
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   @Post()
@@ -53,6 +59,7 @@ export class MoviesController {
 
   @ApiOperation({ summary: 'Update an existing movie' })
   @ApiParam({ name: 'id', type: Number })
+  @ApiCreatedResponse({ type: CreateMovieDto })
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   @Put(':id')
@@ -65,6 +72,7 @@ export class MoviesController {
 
   @ApiOperation({ summary: 'Delete a movie' })
   @ApiParam({ name: 'id', type: Number })
+  @ApiOkResponse({ type: CreateMovieDto })
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   @Delete(':id')
@@ -76,6 +84,7 @@ export class MoviesController {
     summary:
       'Fetch and synchronize movies from Star Wars API into local database',
   })
+  @ApiOkResponse({ type: SyncMoviesResponseDto })
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   @Post('sync')

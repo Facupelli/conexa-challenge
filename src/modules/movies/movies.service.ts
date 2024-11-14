@@ -5,6 +5,7 @@ import { MoviesRepository } from './repositories/movies.repository';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { Movie } from '@prisma/client';
 import { StarWarsApiMovie } from './interfaces/star-wars-api-movie.interface';
+import { SyncMoviesResponseDto } from './dto/sync-movies-response.dto';
 
 @Injectable()
 export class MoviesService {
@@ -58,11 +59,7 @@ export class MoviesService {
     });
   }
 
-  async syncMoviesWithStarWarsApi(): Promise<{
-    added: number;
-    updated: number;
-    errors: number;
-  }> {
+  async syncMoviesWithStarWarsApi(): Promise<SyncMoviesResponseDto> {
     const stats = { added: 0, updated: 0, errors: 0 };
 
     const starWarsApiMovies: { results: StarWarsApiMovie[] } =

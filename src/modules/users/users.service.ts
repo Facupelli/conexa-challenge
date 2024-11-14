@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UsersRepository, UserWithRoles } from './users.repository';
+import { UsersRepository } from './users.repository';
 import { User } from '@prisma/client';
 import { CreateUserDto } from '../auth/dto/create-user.dto';
+import { UserWithRoles } from './interfaces/user-with-roles.interface';
 
 @Injectable()
 export class UsersService {

@@ -1,19 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, User } from '@prisma/client';
-
-export type UserWithRoles = Prisma.UserGetPayload<{
-  select: {
-    email: true;
-    id: true;
-    password: true;
-    roles: {
-      select: {
-        name: true;
-      };
-    };
-  };
-}>;
+import { UserWithRoles } from './interfaces/user-with-roles.interface';
 
 @Injectable()
 export class UsersRepository {

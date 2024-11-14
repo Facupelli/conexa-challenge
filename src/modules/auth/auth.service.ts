@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserWithRoles } from '../users/users.repository';
+import { UserWithRoles } from '../users/interfaces/user-with-roles.interface';
 
 @Injectable()
 export class AuthService {
