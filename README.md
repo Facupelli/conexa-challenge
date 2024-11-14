@@ -134,6 +134,8 @@ La base de datos ya tiene 2 usuarios registrados con los cuales se puede probar 
 - **Usuario Admin**: Email: `admin@conexa.com`, Contraseña: `12345678`
 - **Usuario Regular**: Email: `regular@conexa.com`, Contraseña: `12345678`
 
+También es posible acceder a la documentación de swagger via deploy: `https://conexa-challenge-qz0b.onrender.com/api`
+
 ## Faltantes
 
 Agregar unit tests para controladores y restricción de acceso
