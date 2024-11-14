@@ -65,11 +65,7 @@ export class MoviesService {
 
     const starWarsApiMovies: { results: StarWarsApiMovie[] } =
       await this.starWarsApiRepository.getAllMovies();
-    const localMovies: Movie[] = await this.moviesRepository.getAllMovies({
-      where: {
-        deletedAt: null,
-      },
-    });
+    const localMovies: Movie[] = await this.moviesRepository.getAllMovies({});
 
     for (const swMovie of starWarsApiMovies.results) {
       const externalId = parseInt(swMovie.url.split('/').filter(Boolean).pop());
@@ -84,15 +80,16 @@ export class MoviesService {
           where: {
             id: existingMovie.id,
           },
-          data: mappedMovie,
+          data: { ...mappedMovie, deletedAt: null },
         });
         stats.updated++;
         this.logger.debug(`Updated movie: ${mappedMovie.title}`);
-      } else {
-        await this.moviesRepository.createMovie({ data: mappedMovie });
-        stats.added++;
-        this.logger.debug(`Added new movie: ${mappedMovie.title}`);
+        continue;
       }
+
+      await this.moviesRepository.createMovie({ data: mappedMovie });
+      stats.added++;
+      this.logger.debug(`Added new movie: ${mappedMovie.title}`);
     }
 
     this.logger.log(
