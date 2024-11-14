@@ -105,7 +105,7 @@ Se puede acceder a la documentación de la API en: `http://localhost:3000/api/do
 #### Peliculas
 
 - `GET /movies` - Obtiene todas las películas Público
-- `GET /movies/:id` - Obtiene una película por su ID (Admin & Usuarios Regulares)
+- `GET /movies/:id` - Obtiene una película por su ID (Solo Usuarios Regulares)
 - `POST /movies` - Crea una nueva película (Admin )
 - `PUT /movies/:id` - Actualiza una película (Admin )
 - `DELETE /movies/:id` - Borra una película (Admin )
@@ -127,7 +127,7 @@ Tener en cuenta que es un hosting gratiuito, el servicio entra en modo "sleep" c
 La base de datos ya tiene 2 usuarios registrados con los cuales se puede probar la API:
 
 - **Usuario Admin**: Email: `admin@conexa.com`, Contraseña: `12345678`
-- **Usuario Regular**: Email: `regular@coneza.com`, Contraseña: `12345678`
+- **Usuario Regular**: Email: `regular@conexa.com`, Contraseña: `12345678`
 
 ## Faltantes
 
